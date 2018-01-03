@@ -1,0 +1,45 @@
+---
+title: "Test automarking"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(testthat)
+library(lintr)
+
+```
+
+## Question1: Aim
+
+Save time. Create a function called text_shortener that will drastically shorten a written text. Specifically, we want it to:
+
+  * replace multiple consecutive spaces by a single space.
+  * abbreviate any word that is longer than 5 characters (i.e. replace the additional characters by a '.').
+  * remove all of the following words: "the", "really", "truly", "very".
+  * keep only the first sentence in every paragraph.
+
+
+## Question 1 : Autotesting
+
+Using the `testthat` package, I run 13 tests (complete code for this is available elsewhere). Below, only the FAILED tests are reported.
+
+```{r question1_tests}
+
+source("question1.R")
+test_results <- test_file(path     = "../../src/question1_testcode.R",
+	      	          reporter = CheckReporter)
+
+```
+
+### Question 1: Lint syntax / style guide checking
+
+As covered in class, we fuse lint to ensure that best practices are being respected.
+
+```{r question1_lint}
+
+lint_issues <-lint(filename = "question1.R",
+	           linters  = with_defaults(line_length_linter(120)))
+lint_issues
+length(lint_issues)
+```
