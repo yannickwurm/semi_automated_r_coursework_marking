@@ -1,0 +1,22 @@
+---
+title: "Test automarking"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lintr)
+
+```
+
+### Question 2: Lint syntax / style guide checking
+
+As covered in class, we fuse lint to ensure that best practices are being respected.
+
+```{r question2_lint}
+
+lint_issues <-lint(filename = "question2.R",
+	           linters  = with_defaults(line_length_linter(120)))
+lint_issues
+length(lint_issues)
+```

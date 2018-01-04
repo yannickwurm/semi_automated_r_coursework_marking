@@ -1,10 +1,9 @@
-directories <- c("question1")
+directories <- c("question1_manual")
 files <- list()
 
 for (directory in directories) {
     files[[directory]] <- list.files(path = directory,
-                                     pattern = ".*R")
-
+                                     pattern = ".*R$")
 }
 
 
