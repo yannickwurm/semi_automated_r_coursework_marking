@@ -9,8 +9,8 @@ FileUtils.mkdir(output_dir)
 
 CSV.foreach(input_file) do |row|
   row_content = row[column]
-  id = row[2]
-  next if id == "ID number" # header
+  id = row[3]
+  next if id == "student_id" # header
 
   if id.nil?
     puts "No Id for row" + row.join(", ")
