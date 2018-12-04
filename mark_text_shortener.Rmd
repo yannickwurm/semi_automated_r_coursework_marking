@@ -1,10 +1,10 @@
 ---
-title: "Test automarking"
+title: "Automarking"
 output: html_document
 author: Yannick Wurm
 ---
 
-```{r setup, include=TRUE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(testthat)
 library(lintr)
