@@ -1,16 +1,20 @@
 ---
 title: "Test automarking"
 output: html_document
+author: Yannick Wurm
 ---
 
 ```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 library(testthat)
 library(lintr)
-
+student_id <- gsub(x = getwd(), pattern = ".*/", replacement = "")
 ```
 
-## Question1: Aim
+
+This is run for student `r student_id` on `r format(Sys.time(), "%A %B %d, %Y")` at `r format(Sys.time(), "%H:%M:%S")`.
+
+## Context: Text shortener function
 
 Save time. Create a function called text_shortener that will drastically shorten a written text. Specifically, we want it to:
 
@@ -18,28 +22,43 @@ Save time. Create a function called text_shortener that will drastically shorten
   * abbreviate any word that is longer than 5 characters (i.e. replace the additional characters by a '.').
   * remove all of the following words: "the", "really", "truly", "very".
   * keep only the first sentence in every paragraph.
+  * we do not want anything printed on the screen - the shortened text should simply be "returned"
 
 
-## Question 1 : Autotesting
+## Autotesting
 
-Using the `testthat` package, I run 13 tests (complete code for this is available elsewhere). Below, only the FAILED tests are reported.
+Using the `testthat` package, I run automated tests for each of the features we request (complete code for this is available elsewhere). 
 
-```{r question1_tests}
+```{r tests, echo = FALSE, include = FALSE}
 
-source("question1.R")
-test_results <- test_file(path     = "../../src/question1_testcode.R",
-	      	          reporter = CheckReporter)
+source("code.R")
+test_results <- test_file(path     = "test_text_shortener.R")
+```
+I performed `r sum(data.frame(test_results)$nb)` tests. Among these, `r sum(data.frame(test_results)$failed)` were unsuccessful.
 
+### Output: 
+Below, only the FAILED tests are reported. 
+
+```{r rerunning_with_output}
+test_file(path     = "test_text_shortener.R")
 ```
 
-### Question 1: Lint syntax / style guide checking
+### Lint syntax / style guide checking
 
-As covered in class, we fuse lint to ensure that best practices are being respected.
+As covered in class, we use `lintr` to ensure that formatting is inline with the style guide. 
 
-```{r question1_lint}
+```{r question1_lint, echo = FALSE}
 
-lint_issues <-lint(filename = "question1.R",
-	           linters  = with_defaults(line_length_linter(120)))
+lint_issues <- lint(filename = "code.R",
+	            linters  = with_defaults(line_length_linter(100)))
+```
+
+Overall, `lintr` found `r length(lint_issues)` issues with style of your code.
+
+#### Output:
+
+The identified issues are listed below:
+
+```{r echo = TRUE}
 lint_issues
-length(lint_issues)
 ```

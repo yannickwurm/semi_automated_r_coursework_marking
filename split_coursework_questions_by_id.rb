@@ -23,8 +23,9 @@ CSV.foreach(input_file) do |row|
     next
   end
   
-    
-  File.open( File.join(output_dir, id + ".R"), 'w') do |output|
+  student_dir = File.join(output_dir, id)
+  FileUtils.mkdir_p(student_dir)
+  File.open( File.join(student_dir, "code.R"), 'w') do |output|
     output.write(row_content)
   end                  
 end
