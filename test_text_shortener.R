@@ -1,3 +1,4 @@
+library(testthat)
 context("Question 1: text_shortener")
 
 test_that(desc = "Does the function text_shortener exist?",
@@ -73,6 +74,7 @@ test_that(desc = "Keep only the first sentence in every paragraph.",
               expect_equal(object   = text_shortener("Long hair. Long life."),
                            expected = "Long hair.")
           })
+
 test_that(desc = "Keep only the first sentence in every paragraph.",
           code = {
               expect_equal(object   = text_shortener("I - confine myself to one special difficulty, which at first appeared to me insuperable, and actually fatal to my whole theory. I allude to the neuters or sterile females in insect-communities: for these neuters often differ widely in instinct and in structure from both the males and fertile females, and yet, from being sterile, they cannot propagate their kind. The subject well deserves to be discussed at great length, but I will here take only a single case, that of working or sterile ants."),
