@@ -7,7 +7,7 @@ test_that(desc = "Does the function text_shortener exist?",
                        failure_message = "No function found with that name.")
            })
 
-test_that(desc = "Does it run and return a short input?",
+test_that(desc = "Does it run and appropriately return a short input unchanged?",
           code = {
                expect_equal(object   = text_shortener("asdf"),
                             expected = "asdf")
@@ -15,8 +15,8 @@ test_that(desc = "Does it run and return a short input?",
 
 test_that(desc = "Replace multiple consecutive spaces by a single space: fish",
           code = {
-               expect_equal(object   = text_shortener("red   fish blue fish"),
-                            expected = "red fish blue fish")
+               expect_equal(object   = text_shortener("red   fish blue fish."),
+                            expected = "red fish blue fish.")
            })
 
 test_that(desc = "Replace multiple consecutive spaces by a single space: hello",
@@ -32,19 +32,19 @@ test_that(desc = "Replace multiple consecutive spaces by a single space: ants ar
                             expected = "Yes maam ants are best sir.")
            })
 
-test_that(desc = "Abbreviate words longer than 5 characters (i.e. replace the additional characters by a '.'): Lala",
+test_that(desc = "Abbreviate words longer than 5 chars (i.e. replace extra characters by a '.'): Lala",
           code = {
                expect_equal(object   = text_shortener("Lalalalalalalalala"),
                             expected = "Lalal.")
            })
 
-test_that(desc = "Abbreviate words longer than 5 characters (i.e. replace the additional characters by a '.'): elephant",
+test_that(desc = "Abbreviate words longer than 5 chars (i.e. replace extra characters by a '.'): elephant",
           code = {
                expect_equal(object   = text_shortener("Superfragilistic elephant"),
                             expected = "Super. eleph.")
            })
 
-test_that(desc = "Abbreviate words longer than 5 characters (i.e. replace the additional characters by a '.'): expectation",
+test_that(desc = "Abbreviate words longer than 5 chars (i.e. replace extra characters by a '.'): expectation",
           code = {
                expect_equal(object   = text_shortener("Expectation, anticipation, gravity & hope."),
                             expected = "Expec., antic., gravi. & hope.")
@@ -88,6 +88,6 @@ test_that(desc = "Keep only the first sentence in every paragraph.",
                                 sep = "\n")
               expected_shortened_text <- paste("Les sangl longs des violo de l autom.", "Quand sonne lheur, je me souvi des jours ancie.", sep = "\n")
               expect_equal(object   = text_shortener(big_text),
-                            expected = expected_shortened_text)
-
+                           expected = expected_shortened_text)
+              
           })

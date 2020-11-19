@@ -1,20 +1,24 @@
 # manually deduplicated, fixed student ids, saved as CSV from excel.
 
-ruby automated_code/split_coursework_questions_by_id.rb 2018\ -\ Msc\ part\ 4\ -\ text\ shortener\ \(Responses\)-deduplicated-fixedids.csv 4 shortener
-
+# ruby automated_code/split_coursework_questions_by_id.rb 2018\ -\ Msc\ part\ 4\ -\ text\ shortener\ \(Responses\)-deduplicated-fixedids.csv 4 shortener
+```
+ln -s Downloaded_directory_with_long_names submissions
+# keep only numbers
+rename -e 's/([A-z_ ]*)([0-9]+)(_[A-z]+)/\2/'  *
+```
 
 Then I ran marking code on each one withing a reporting environment, as part of `mark_text_shortener.Rmd`:
 
 
 ```bash 
-ls shortener | parallel "cd shortener/{}; ln -s ../../automated_code/mark_text_shortener.Rmd"
-ls shortener | parallel "cd shortener/{}; ln -s ../../automated_code/test_text_shortener.R"
+ls submissions | parallel "cd submissions/{}; ln -s ../../code/mark_text_shortener.Rmd"
+ls submissions | parallel "cd submissions/{}; ln -s ../../code/test_text_shortener.R"
 
-ls shortener | parallel -j 1 -t -q --workdir shortener/{} Rscript -e "library(knitr); library(stringi); library(stringr); library(rmarkdown); output = knit('mark_text_shortener.Rmd'); render(output, output_format='html_document')"
+ls submissions | parallel -j 1 -t -q --workdir submissions/{} Rscript -e 'library(knitr); library(stringi); library(stopwords); library(stringr); library(rmarkdown); library(tm); library(tokenizers); output = knit("mark_text_shortener.Rmd"); render(output, output_format = "html_document")'
 
 ```
 
-I had to check for `Execution halted` messages that occurred when students had superfluous commands in their code (e.g. calling variable that don't exist, etc)
+I had to check for "Error"  `Execution halted` messages that occurred when students had superfluous commands in their code (e.g. calling variable that don't exist, etc)
 
 
 (This creates a detailed html doc for each student, highlighting which tests failed and which worked - thanks to R's testthat unit testing package)
@@ -23,8 +27,8 @@ I had to check for `Execution halted` messages that occurred when students had s
 
 To populate my excel with the students marks:
 ```
-egrep "were unsuccessfu" shortener/*/*.md  | tr '/' ' ' | cut -f 2,5,9 -d ' ' > marks/test_per_student.tab
-grep "issues with style" shortener/*/*.md | ruby -pe 'gsub(/[A-z.:,.\/]+/, "")' | ruby -pe 'gsub(/ +/, " ")' | cut  -f1,2 > marks/lint_issues_per_student.tab
+egrep "were unsuccessfu" submissions/*/*.md | sed 's/submissions\///' | sed 's/_assignsubmission_file_\/mark_text_shortener.md:I /: /'  > marks/test_per_student.tsv
+grep "issues with style" submissions/*/*.md | ruby -pe 'gsub(/[A-z.:,.\/]+/, "")' | ruby -pe 'gsub(/ +/, " ")' | cut  -f1,2 > marks/lint_issues_per_student.tsv
 
 ```
 

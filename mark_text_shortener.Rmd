@@ -8,6 +8,7 @@ author: Yannick Wurm
 knitr::opts_chunk$set(echo = TRUE)
 library(testthat)
 library(lintr)
+library(stringi); library(stopwords); library(stringr); library(rmarkdown); library(tm); library(tokenizers);
 student_id <- gsub(x = getwd(), pattern = ".*/", replacement = "")
 ```
 
@@ -25,16 +26,48 @@ Save time. Create a function called text_shortener that will drastically shorten
   * we do not want anything printed on the screen - the shortened text should simply be "returned"
 
 
+## Loading your file
+
+
+```{r loading, echo = FALSE}
+r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE)
+
+submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value = TRUE, invert = TRUE)
+
+source(submitted_script)
+```
+
+Evaluating `r submitted_script`
+
+```{r load2, echo=FALSE, eval=TRUE}
+if (file.exists("additional_notes.txt")) {
+  cat(readLines("additional_notes.txt"), sep = "\n")
+} else {
+  # no problems loading
+}
+```
+
+Your `text_shortener()` function was: 
+
+```{r, code = text_shortener, eval = FALSE}
+```
+
+
+
 ## Autotesting
 
 Using the `testthat` package, I run automated tests for each of the features we request (complete code for this is available elsewhere). 
 
 ```{r tests, echo = FALSE, include = FALSE}
-
-source("code.R")
 test_results <- test_file(path     = "test_text_shortener.R")
 ```
+
 I performed `r sum(data.frame(test_results)$nb)` tests. Among these, `r sum(data.frame(test_results)$failed)` were unsuccessful.
+
+### The complete series of tests are: 
+
+```{r code = readLines("test_text_shortener.R"), eval = FALSE}
+```
 
 ### Output: 
 Below, only the FAILED tests are reported. 
@@ -48,9 +81,14 @@ test_file(path     = "test_text_shortener.R")
 As covered in class, we use `lintr` to ensure that formatting is inline with the style guide. 
 
 ```{r question1_lint, echo = FALSE}
+                                                                                                 
+r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE)                                                                                                                                        
+                                                                                                                                                                                                        
+submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value = TRUE, invert = TRUE)    
 
-lint_issues <- lint(filename = "code.R",
-	            linters  = with_defaults(line_length_linter(100)))
+
+lint_issues <- lint(filename = submitted_script,
+                    linters  = with_defaults(line_length_linter(100)))
 ```
 
 Overall, `lintr` found `r length(lint_issues)` issues with style of your code.
@@ -62,3 +100,4 @@ The identified issues are listed below:
 ```{r echo = TRUE}
 lint_issues
 ```
+
