@@ -43,7 +43,7 @@ Evaluating `r submitted_script`
 if (file.exists("additional_notes.txt")) {
   cat(readLines("additional_notes.txt"), sep = "\n")
 } else {
-  # no problems loading
+  print("No problems loading")
 }
 ```
 

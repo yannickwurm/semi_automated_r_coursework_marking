@@ -14,7 +14,7 @@ Then I ran marking code on each one withing a reporting environment, as part of 
 ls submissions | parallel "cd submissions/{}; ln -s ../../code/mark_text_shortener.Rmd"
 ls submissions | parallel "cd submissions/{}; ln -s ../../code/test_text_shortener.R"
 
-ls submissions | parallel -j 1 -t -q --workdir submissions/{} Rscript -e 'library(knitr); library(stringi); library(stopwords); library(stringr); library(rmarkdown); library(tm); library(tokenizers); output = knit("mark_text_shortener.Rmd"); render(output, output_format = "html_document")'
+ls submissions | parallel -j 1 -t -q --workdir submissions/{} Rscript -e 'library(knitr); output = knit("mark_text_shortener.Rmd"); render(output, output_format = "html_document")'
 
 ```
 
@@ -31,6 +31,15 @@ egrep "were unsuccessfu" submissions/*/*.md | sed 's/submissions\///' | sed 's/_
 grep "issues with style" submissions/*/*.md | ruby -pe 'gsub(/[A-z.:,.\/]+/, "")' | ruby -pe 'gsub(/ +/, " ")' | cut  -f1,2 > marks/lint_issues_per_student.tsv
 
 ```
+
+For sharing these results with students, Idid: 
+
+```
+ls submissions | parallel -j 1 -t "cd submissions/{}/; ln -s mark_text_shortener.html index.html; cd ../.."
+```
+
+Then copied into a separate directory and uploaded to antgenomes/tmp
+
 
 Additionally, took notes in `notes_for_getting_things_to_load`. Summary of marks in marks_summary.xlsx
 
