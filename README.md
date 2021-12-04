@@ -1,22 +1,25 @@
-# manually deduplicated, fixed student ids, saved as CSV from excel.
+# Do the marking within git/code directory 
 
-# ruby automated_code/split_coursework_questions_by_id.rb 2018\ -\ Msc\ part\ 4\ -\ text\ shortener\ \(Responses\)-deduplicated-fixedids.csv 4 shortener
+Download all submissions, rename overall dear to submissions, raname each student dir to only be studnet number
+
 ```
-ln -s Downloaded_directory_with_long_names submissions
+mv BIO773-Downloaded_directory_with_long_names submissions
 # keep only numbers
 rename -e 's/([A-z_ ]*)([0-9]+)(_[A-z]+)/\2/'  *
 ```
 
+
 Then I ran marking code on each one withing a reporting environment, as part of `mark_text_shortener.Rmd`:
 
-
 ```bash 
-ls submissions | parallel "cd submissions/{}; ln -s ../../code/mark_text_shortener.Rmd"
-ls submissions | parallel "cd submissions/{}; ln -s ../../code/test_text_shortener.R"
+ls submissions | parallel "cd submissions/{}; ln -s ../../mark_text_shortener.Rmd"
+ls submissions | parallel "cd submissions/{}; ln -s ../../test_text_shortener.R"
 
 ls submissions | parallel -j 1 -t -q --workdir submissions/{} Rscript -e 'library(knitr); output = knit("mark_text_shortener.Rmd"); render(output, output_format = "html_document")'
 
 ```
+
+Running typically requires installing all the R libraries that students depend on. 
 
 I had to check for "Error"  `Execution halted` messages that occurred when students had superfluous commands in their code (e.g. calling variable that don't exist, etc)
 
