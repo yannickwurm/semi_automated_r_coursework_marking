@@ -1,3 +1,7 @@
+# WARNING
+
+need to change logic at beginning to use the other download - see #2
+
 # Do the marking within git/code directory 
 
 Download all submissions, rename overall dear to submissions, raname each student dir to only be studnet number
@@ -30,18 +34,17 @@ I had to check for "Error"  `Execution halted` messages that occurred when stude
 
 To populate my excel with the students marks:
 ```
+mkdir marks
 egrep "were unsuccessfu" submissions/*/*.md | sed 's/submissions\///' | sed 's/_assignsubmission_file_\/mark_text_shortener.md:I /: /'  > marks/test_per_student.tsv
 grep "issues with style" submissions/*/*.md | ruby -pe 'gsub(/[A-z.:,.\/]+/, "")' | ruby -pe 'gsub(/ +/, " ")' | cut  -f1,2 > marks/lint_issues_per_student.tsv
 
 ```
 
-For sharing these results with students, Idid: 
+For sharing these results with students, I did: 
 
 ```
-ls submissions | parallel -j 1 -t "cd submissions/{}/; ln -s mark_text_shortener.html index.html; cd ../.."
+ls submissions |  parallel -j 1 -t "scp submissions/{}/mark_text_shortener.html ubuntu@sequenceserver.com://efs/static-sites/antgenomes.org/users/yannickwurm/tmp/feedback/2021_{}.html"
 ```
-
-Then copied into a separate directory and uploaded to antgenomes/tmp
 
 
 Additionally, took notes in `notes_for_getting_things_to_load`. Summary of marks in marks_summary.xlsx
