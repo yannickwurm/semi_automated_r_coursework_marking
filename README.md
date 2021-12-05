@@ -25,7 +25,7 @@ ls submissions | parallel -j 1 -t -q --workdir submissions/{} Rscript -e 'librar
 
 Running typically requires installing all the R libraries that students depend on. 
 
-I had to check for "Error"  `Execution halted` messages that occurred when students had superfluous commands in their code (e.g. calling variable that don't exist, etc)
+I had to check for "Error"  `Execution halted` messages that occurred when students had superfluous commands in their code (e.g. calling variable that don't exist, etc). **When this happens, add a `additional_notes.txt` into the student's directory.**
 
 
 (This creates a detailed html doc for each student, highlighting which tests failed and which worked - thanks to R's testthat unit testing package)
