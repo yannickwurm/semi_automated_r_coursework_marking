@@ -39,20 +39,12 @@ egrep "were unsuccessfu" submissions/*/*.md | sed 's/submissions\///' | sed 's/_
 grep "issues with style" submissions/*/*.md | ruby -pe 'gsub(/[A-z.:,.\/]+/, "")' | ruby -pe 'gsub(/ +/, " ")' | cut  -f1,2 > marks/lint_issues_per_student.tsv
 
 ```
+Merged results & added calculations in Numbers & uploaded (by pasting) from there. 
+
 
 For sharing these results with students, I did: 
 
 ```
 ls submissions |  parallel -j 1 -t "scp submissions/{}/mark_text_shortener.html ubuntu@sequenceserver.com://efs/static-sites/antgenomes.org/users/yannickwurm/tmp/feedback/2021_{}.html"
 ```
-
-
-Additionally, took notes in `notes_for_getting_things_to_load`. Summary of marks in marks_summary.xlsx
-
-
-
-
-
-
-
 
