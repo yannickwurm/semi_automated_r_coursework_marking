@@ -47,30 +47,28 @@ if (file.exists("additional_notes.txt")) {
 }
 ```
 
-Your `text_shortener()` function was: 
+Your `text_shortener()` function was:
 
 ```{r, code = text_shortener, eval = FALSE}
 ```
 
-
-
 ## Autotesting
 
-Using the `testthat` package, I run automated tests for each of the features we request (complete code for this is available elsewhere). 
+Using the `testthat` package, I run automated tests for each of the features we request (complete code for this is available elsewhere).
 
 ```{r tests, echo = FALSE, include = FALSE}
 test_results <- test_file(path     = "test_text_shortener.R")
 ```
 
-I performed `r sum(data.frame(test_results)$nb)` tests. Among these, `r sum(data.frame(test_results)$failed)` were unsuccessful.
+I performed `r length(data.frame(test_results)$result)` tests of the code functionality. Among these, `r sum(data.frame(test_results)$passed)` passed successfully. There were `r sum(data.frame(test_results)$warning)` warnings.
 
-### The complete series of tests are: 
+### The complete series of tests are:
 
 ```{r code = readLines("test_text_shortener.R"), eval = FALSE}
 ```
 
-### Output: 
-Below, only the FAILED tests are reported. 
+### Output:
+Below, only the FAILED tests are reported.
 
 ```{r rerunning_with_output}
 test_file(path     = "test_text_shortener.R")
@@ -78,13 +76,13 @@ test_file(path     = "test_text_shortener.R")
 
 ### Lint syntax / style guide checking
 
-As covered in class, we use `lintr` to ensure that formatting is inline with the style guide. 
+As covered in class, we use `lintr` to ensure that formatting is inline with the style guide.
 
 ```{r question1_lint, echo = FALSE}
-                                                                                                 
-r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE)                                                                                                                                        
-                                                                                                                                                                                                        
-submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value = TRUE, invert = TRUE)    
+
+r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE)
+
+submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value = TRUE, invert = TRUE)
 
 
 lint_issues <- lint(filename = submitted_script,
