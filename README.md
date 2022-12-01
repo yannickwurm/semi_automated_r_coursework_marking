@@ -1,6 +1,6 @@
 # WARNING
 
-need to change logic at beginning to use the other download - see #2
+Check naming matches what it did in 2022 - see #2
 
 # Do the marking within git/code directory 
 
@@ -8,8 +8,11 @@ Download all submissions, rename overall dear to submissions, raname each studen
 
 ```
 mv BIO773-Downloaded_directory_with_long_names submissions
+cd submission
 # keep only numbers
-rename -e 's/([A-z_ ]*)([0-9]+)(_[A-z]+)/\2/'  *
+rename --dry-run -e 's/([A-z_\- ]*)([0-9]+)(_[A-z]+)/$2/'  * 
+
+rename  -e 's/([A-z_\- ]*)([0-9]+)(_[A-z]+)/$2/'  * 
 ```
 
 
