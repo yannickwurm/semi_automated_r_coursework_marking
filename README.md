@@ -2,6 +2,8 @@
 
 Check naming matches what it did in 2022 - see #2
 
+** NO THIS IS RWONG> THE NUMBERS ARE NOT STUDENT IDS... I DONT KNOW A GOOD WAY OF GETTING THEM> SO I SEPARATELY DOWNLOAD STUDENT NAMES AND USE THOSE TO GET THEIR EMAISL WHICH IS A PRIMARY KEY FOR UPLOAD>>>>
+
 # Do the marking within git/code directory 
 
 Download all submissions, rename overall dear to submissions, raname each student dir to only be studnet number
