@@ -38,7 +38,7 @@ I had to check for "Error"  `Execution halted` messages that occurred when stude
 To populate my excel with the students marks:
 ```
 mkdir marks
-egrep "were unsuccessfu" submissions/*/*.md | sed 's/submissions\///' | sed 's/_assignsubmission_file_\/mark_text_shortener.md:I /: /'  > marks/test_per_student.tsv
+egrep "successfu" submissions/*/*.md | sed 's/submissions\///' | sed 's/\/mark_text_shortener.md:I performed/,/' | sed 's/ of the code functionality. Among these, /,/' | sed 's/ passed successfully. There were /, passed, /' > marks/test_per_student.csv
 grep "issues with style" submissions/*/*.md | ruby -pe 'gsub(/[A-z.:,.\/]+/, "")' | ruby -pe 'gsub(/ +/, " ")' | cut  -f1,2 > marks/lint_issues_per_student.tsv
 
 ```
