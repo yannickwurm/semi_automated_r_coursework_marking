@@ -30,11 +30,38 @@ Save time. Create a function called text_shortener that will drastically shorten
 
 
 ```{r loading, echo = FALSE}
-r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE)
+r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE, ignore.case = TRUE)
 
 submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value = TRUE, invert = TRUE)
+rm(r_files)
 
 source(submitted_script)
+
+# if text_shortener doesn't exist, look for other functions.
+if (!exists("text_shortener")) {
+  user_objects <- ls()
+  user_objects <- user_objects[!user_objects %in% c("submitted_script", "user_objects", "student_id")]
+  message("text_shortener function not found")
+  cat(x = paste("\n\nA function named text_shortener unfortunately was not found ",
+                "in your submission. We found this instead:", user_objects),
+      file ="additional_notes.txt",
+      append = TRUE
+     )
+
+  if (length(user_objects) == 1) {
+    text_shortener <-  environment()[[user_objects]]
+  } else {
+    cat(x = "\n\nMultiple functions found so I cannot automatically find the right one: ", paste(user_objects, sep=", "),
+        file ="additional_notes.txt",
+        append = TRUE)
+    stop("text_shortener function not found. Need ot stop marking.")
+  }
+}
+
+#  - If just one, use that one (copy it to text_shortener, and put into additional notes)
+#  - if more than one print error.
+
+
 ```
 
 Evaluating `r submitted_script`
