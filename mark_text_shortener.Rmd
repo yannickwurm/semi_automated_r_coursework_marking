@@ -107,7 +107,7 @@ As covered in class, we use `lintr` to ensure that formatting is inline with the
 
 ```{r question1_lint, echo = FALSE}
 
-r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE)
+r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE, ignore.case = TRUE)
 
 submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value = TRUE, invert = TRUE)
 
