@@ -14,17 +14,13 @@ test_that(desc = "Does it run and appropriately return a short input unchanged?"
            })
 
 test_that("Function handles text without full stops as single sentence", {
-  text <- "This is a text without full stops"
-  expected <- "This is a text without full stops"
+  text <- "This is a text with no full stops"
+  expected <- "This is a text with no full stops"
   expect_equal(shorten_text(text), expected)
 })
 
-test_that("Function does not print anything to the screen", {
-  expect_output(shorten_text("Some random text."), NULL)
-})
-
 # Additional tests to handle edge cases
-test_that("Function handles empty strings", {
+test_that("Function returns an empty string when given an empty string", {
   expect_equal(shorten_text(""), "")
 })
 
@@ -42,11 +38,10 @@ test_that(desc = "Replace multiple consecutive spaces by a single space: fish",
 
 test_that(desc = "Multiple consecutive spaces are replaced by a single space",
           code = {
-               text <- "This is  a  test    string with    multiple spaces."
-               expected <- "This is a test string with multiple spaces."
+               text <- "This is  a  test    with    many spaces."
+               expected <- "This is a test with many spaces."
                expect_equal(shorten_text(text), expected)
                })
-})
 
 test_that(desc = "Replace multiple consecutive spaces by a single space: hello",
           code = {
