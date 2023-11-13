@@ -17,19 +17,29 @@ This is run for student `r student_id` on `r format(Sys.time(), "%A %B %d, %Y")`
 
 ## Context: Text shortener function
 
-Save time. Create a function called text_shortener that will drastically shorten a written text. Specifically, we want it to:
+The goal of this assignment is to write a function that takes a text as input and returns a condensed version of that text. The following requirements were specified:
 
-  * replace multiple consecutive spaces by a single space.
-  * abbreviate any word that is longer than 5 characters (i.e. replace the additional characters by a '.').
-  * remove all of the following words: "the", "really", "truly", "very".
-  * keep only the first sentence in every paragraph.
-  * we do not want anything printed on the screen - the shortened text should simply be "returned"
+### Function Requirements:
+
+* Consecutive Spaces: The function should identify and replace sequences of multiple spaces in the input text with a single space.
+* Word Abbreviation: Any word in the text that has more than 5 characters should be abbreviated. This means retaining the first 5 characters of the word and replacing all subsequent characters with a single period ('.'). For instance, "evolution" becomes "evolu.".
+* Word Removal: The function should completely remove specific words from the text. These words are: "the", "really", "truly", "very". They should be removed regardless of their case (i.e., "The" or "tHe" should also be removed).
+* Sentence Retention: For every paragraph in the input, only the first sentence should be kept. All other sentences in that paragraph should be discarded. However, the original structure of paragraphs should remain intact. Each retained sentence should stand as its own paragraph in the output.
+* Input: The function should take a single character string as input.
+* Console Output: The function should not display or print any content to the R console. Instead, the condensed version of the text should be returned as a string.
+
+### Submission Instructions:
+
+* Your solution should be submitted as a single .R file. Ensure that this file can be directly loaded into an R environment without errors.
+* The .R file should exclusively contain functions. If there's a need to load any R libraries, incorporate this within a distinct function named setup() inside the same file.
+While it's permissible to include auxiliary functions (for instance, for testing or sub-tasks), do not incorporate any standalone R commands or scripts outside of function definitions.
+Name your file appropriately, following any conventions provided. Automated Grading: Upon submission, your function will be run through a series of tests to validate its correctness. Ensure that your function meets all the specified requirements to score maximum points.
 
 
 ## Loading your file
 
 
-```{r loading, echo = FALSE}
+```{r loading, echo = FALSE, eval = TRUE}
 r_files <- grep(x = list.files(), pattern = ".R$", value = TRUE, ignore.case = TRUE)
 
 submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value = TRUE, invert = TRUE)
@@ -37,68 +47,84 @@ rm(r_files)
 
 source(submitted_script)
 
-# if text_shortener doesn't exist, look for other functions.
-if (!exists("text_shortener")) {
+# if shorten_text doesn't exist, look for other functions.
+if (!exists("shorten_text")) {
   user_objects <- ls()
   user_objects <- user_objects[!user_objects %in% c("submitted_script", "user_objects", "student_id")]
-  message("text_shortener function not found")
-  cat(x = paste("\n\nA function named text_shortener unfortunately was not found ",
+  message("shorten_text function not found")
+  cat(x = paste("\n\nA function named shorten_text unfortunately was not found ",
                 "in your submission. We found this instead:", user_objects),
       file ="additional_notes.txt",
       append = TRUE
      )
 
   if (length(user_objects) == 1) {
-    text_shortener <-  environment()[[user_objects]]
+    shorten_text <-  environment()[[user_objects]]
   } else {
     cat(x = "\n\nMultiple functions found so I cannot automatically find the right one: ", paste(user_objects, sep=", "),
         file ="additional_notes.txt",
         append = TRUE)
-    stop("text_shortener function not found. Need ot stop marking.")
+    stop("shorten_text function not found. Need to stop marking.")
   }
 }
 
-#  - If just one, use that one (copy it to text_shortener, and put into additional notes)
+#  - If just one, use that one (copy it to shorten_text, and put into additional notes)
 #  - if more than one print error.
-
-
 ```
 
-Evaluating `r submitted_script`
+### The script, `r submitted_script`, you submitted was:
+
+```{r eval=TRUE, echo=FALSE}
+lines <- readLines(submitted_script, warn = FALSE)
+cat(lines, sep="\n")
+```
+
+
+### Trying to load `r submitted_script`....
 
 ```{r load2, echo=FALSE, eval=TRUE}
 if (file.exists("additional_notes.txt")) {
-  cat(readLines("additional_notes.txt"), sep = "\n")
+  cat(readLines("additional_notes.txt", warn = FALSE), sep = "\n")
 } else {
-  print("No problems loading")
+  print("No problems loading this file")
 }
 ```
 
-Your `text_shortener()` function was:
 
-```{r, code = text_shortener, eval = FALSE}
-```
 
 ## Autotesting
 
-Using the `testthat` package, I run automated tests for each of the features we request (complete code for this is available elsewhere).
+Using R's `testthat` package, I run automated tests for each of the features we request (see below).
 
 ```{r tests, echo = FALSE, include = FALSE}
 test_results <- test_file(path     = "test_text_shortener.R")
 ```
 
-I performed `r length(data.frame(test_results)$result)` tests of the code functionality. Among these, `r sum(data.frame(test_results)$passed)` passed successfully. There were `r sum(data.frame(test_results)$warning)` warnings.
+I performed `r length(data.frame(test_results)$result)` tests of the code functionality. Among these, `r sum(data.frame(test_results)$passed)` passed successfully. **This gives you a base score of `r round(100 *sum(data.frame(test_results)$passed)/length(data.frame(test_results)$result))` out of 100 for the code's functionality**. This mark could be reduced if there were difficulties loading the code, if there were warnings, or if the code did not follow the style guide.
 
-### The complete series of tests are:
+There were `r sum(data.frame(test_results)$warning)` warnings.
+
+### The complete series of automated tests I ran are shown below:
+
+A brief explanation of how to read these automated tests. Each `test_that()` call is a test. The first argument is a description of the test. Thereafter is a call to your function on some test text. The `expected = ` line indicates what I expected as a result when running your function on the test text. If the code returns the expected result, the test passes. If it does not, the test fails.
+
+Some of the tests check for only one particular aspect of what was requested in this exercise (e.g., exclusively checking that excess whitespace is removed). While others check for multiple aspects.
 
 ```{r code = readLines("test_text_shortener.R"), eval = FALSE}
 ```
 
 ### Output:
-Below, only the FAILED tests are reported.
 
-```{r rerunning_with_output}
-test_file(path     = "test_text_shortener.R")
+We ran each of the tests outlined above. In the output below, a first "table" shows R's interactive output while it ran the tests, where it counts how many failed an how many passed.
+
+The second section shows the outputs of the tests that were unsuccessful. R indicates `-- Failure` for each of these. Here, you can see:
+
+  * the description of the test that was run (e.g., "Remove all of the following words: 'the', 'really', 'truly', 'very'.")
+  * the line of code that was run (e.g., `shorten_text("This is the really truly very best test.")`), R's explanation of the problem (e.g., `not equal to`) and the expected output.
+  * It then provides more details on the comparison it did. When comparing text, x[1] indicates what your code output, and [1] indicates what would have been expected.
+
+```{r rerunning_with_output, echo = FALSE, eval = TRUE}
+a <- test_file(path     = "test_text_shortener.R")
 ```
 
 ### Lint syntax / style guide checking
@@ -113,7 +139,7 @@ submitted_script <- grep(x = r_files, pattern = "test_text_shortener.R", value =
 
 
 lint_issues <- lint(filename = submitted_script,
-                    linters  = with_defaults(line_length_linter(100)))
+                    linters  = linters_with_defaults(line_length_linter(100)))
 ```
 
 Overall, `lintr` found `r length(lint_issues)` issues with style of your code.
@@ -122,7 +148,14 @@ Overall, `lintr` found `r length(lint_issues)` issues with style of your code.
 
 The identified issues are listed below:
 
-```{r echo = TRUE}
-lint_issues
+```{r echo = FALSE}
+
+# pretty print each issue - this is a list
+for (issue in lint_issues) {
+  # add line number, column number, and message
+   print(paste("Line ", issue$line_number, ", column ", issue$column_number, ": ", issue$message, sep = ""))
+   print(paste("  Was: ", issue$line, sep = ""))
+   print("---")
+}
 ```
 
