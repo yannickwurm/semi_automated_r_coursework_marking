@@ -115,16 +115,34 @@ Some of the tests check for only one particular aspect of what was requested in 
 
 ### Output:
 
-We ran each of the tests outlined above. In the output below, a first "table" shows R's interactive output while it ran the tests, where it counts how many failed an how many passed.
-
-The second section shows the outputs of the tests that were unsuccessful. R indicates `-- Failure` for each of these. Here, you can see:
+We ran each of the tests outlined above. Here, we see `testthat` output only for the tests that were unsuccessful. For each, you can see:
 
   * the description of the test that was run (e.g., "Remove all of the following words: 'the', 'really', 'truly', 'very'.")
-  * the line of code that was run (e.g., `shorten_text("This is the really truly very best test.")`), R's explanation of the problem (e.g., `not equal to`) and the expected output.
-  * It then provides more details on the comparison it did. When comparing text, x[1] indicates what your code output, and [1] indicates what would have been expected.
+  * the line of code that was run (e.g., `shorten_text(text)`), and a R's simplified explanation of the problem (e.g., `not equal to`).
+  * It then provides more details on the comparison it did. When comparing text, `x[1]` indicates what your code output, and `y[1]` indicates what would have been expected.
 
 ```{r rerunning_with_output, echo = FALSE, eval = TRUE}
-a <- test_file(path     = "test_text_shortener.R")
+#a <- test_file(path     = "test_text_shortener.R")
+
+results <- test_file(path = "test_text_shortener.R", report="List")
+for (result in results) {
+  evaluation = as.character((result$results)[[1]])
+  if (!grepl(pattern = 'success',
+  x = evaluation)) {
+    print(paste("## Test:", result$test))
+  # Split the string into lines
+  lines <- strsplit(evaluation, "\n")[[1]]
+
+  # Add 8 spaces to each line
+  indented_lines <- paste("        ", lines, sep = "")
+
+  # Concatenate the lines back together
+  indented_text <- paste(indented_lines, collapse = "\n")
+
+  # Print the indented text
+  cat(paste(indented_text, "\n\n", sep = ""))
+  }
+}
 ```
 
 ### Lint syntax / style guide checking
