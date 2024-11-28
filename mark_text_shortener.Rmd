@@ -97,7 +97,7 @@ knitr::asis_output(paste0("```r\n", paste(lines, collapse = "\n"), "\n```"))
 if (file.exists("additional_notes.txt")) {
   cat(readLines("additional_notes.txt", warn = FALSE), sep = "\n")
 } else {
-  print("No problems loading this file")
+  message("No problems loading this file")
 }
 ```
 
