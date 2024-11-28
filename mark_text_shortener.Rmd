@@ -13,6 +13,9 @@ pre, code {
   overflow-x: auto;         /* Horizontal scrolling */
   white-space: pre-wrap;    /* Wrap long lines */
 }
+h3 {
+  font-size: 1.0em;
+}
 </style>
 
 ```{r setup, include=FALSE}
@@ -134,26 +137,31 @@ We ran each of the tests outlined above. Here, we see `testthat` output only for
 
 ```{r rerunning_with_output, echo = FALSE, eval = TRUE}
 #a <- test_file(path     = "test_text_shortener.R")
+library(testthat)
+# Initialize a variable to hold the Markdown output
+output <- ""
 
-results <- test_file(path = "test_text_shortener.R", report="List")
+results <- test_file(path = "test_text_shortener.R", reporter = "List")
+
 for (result in results) {
-  evaluation = as.character((result$results)[[1]])
-  if (!grepl(pattern = 'success',
-  x = evaluation)) {
-    print(paste("## Test:", result$test))
-  # Split the string into lines
-  lines <- strsplit(evaluation, "\n")[[1]]
-
-  # Add 8 spaces to each line
-  indented_lines <- paste("        ", lines, sep = "")
-
-  # Concatenate the lines back together
-  indented_text <- paste(indented_lines, collapse = "\n")
-
-  # Print the indented text
-  cat(paste(indented_text, "\n\n", sep = ""))
+  evaluation <- as.character((result$results)[[1]])
+  if (!grepl(pattern = "success", x = evaluation)) {
+    # Add the test name as a Markdown header
+    output <- paste0(output, "\n\n### ❌ Test: ", result$test, "\n\n")
+    
+    # Split the evaluation message into lines
+    lines <- strsplit(evaluation, "\n")[[1]]
+    
+    # Format each line for indentation
+    formatted_lines <- paste("    ", lines)
+    
+    # Append formatted lines as a Markdown code block
+    output <- paste0(output, "```\n", paste(formatted_lines, collapse = "\n"), "\n```\n")
   }
 }
+
+# Output the Markdown content
+knitr::asis_output(output)
 ```
 
 ### Lint syntax / style guide checking
