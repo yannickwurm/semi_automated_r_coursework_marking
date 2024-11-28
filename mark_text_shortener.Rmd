@@ -4,6 +4,12 @@ output: html_document
 author: Yannick Wurm
 ---
 
+<style>
+pre, code {
+  font-size: 0.85em; /* Adjust the font size as needed */
+}
+</style>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(testthat)
@@ -119,7 +125,7 @@ We ran each of the tests outlined above. Here, we see `testthat` output only for
 
   * the description of the test that was run (e.g., "Remove all of the following words: 'the', 'really', 'truly', 'very'.")
   * the line of code that was run (e.g., `shorten_text(text)`), and a R's simplified explanation of the problem (e.g., `not equal to`).
-  * It then provides more details on the comparison it did. When comparing text, `x[1]` indicates what your code output, and `y[1]` indicates what would have been expected.
+  * It then provides more details on the comparison it did. When comparing text, `x[1]` indicates what your code output, and `y[1]` indicates what would have been expected. If for many of the tests you see an output like "NULL" or "Lengths differ", then your function likely didn't return a single string. This could for example have happened if you are printing to the console, or if you are returning a vector of strings instead of a single string. Unfortunately, returning a string was one of the essential requirements for this exercise.
 
 ```{r rerunning_with_output, echo = FALSE, eval = TRUE}
 #a <- test_file(path     = "test_text_shortener.R")
@@ -172,8 +178,8 @@ The identified issues are listed below:
 for (issue in lint_issues) {
   # add line number, column number, and message
    print(paste("Line ", issue$line_number, ", column ", issue$column_number, ": ", issue$message, sep = ""))
-   print(paste("  Was: ", issue$line, sep = ""))
-   print("---")
+   print(paste("     Was: ", issue$line, sep = ""))
+   print("")
 }
 ```
 
