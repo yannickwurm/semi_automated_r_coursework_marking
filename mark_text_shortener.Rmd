@@ -1,38 +1,123 @@
 ---
 title: "Automarking for 25% of Bio773p Coursework"
 output: html_document
-author: Yannick Wurm
 ---
 
 <style>
-pre, code {
-  font-family: Consolas, Monaco, "Courier New", Courier, monospace;
-  font-size: 0.75em;
-  padding: 3px;
-  border-radius: 5px;
-  overflow-x: auto;         /* Horizontal scrolling */
-  white-space: pre-wrap;    /* Wrap long lines */
-}
-h2 {
-  font-size: 1.5em;
-}
-h3 {
-  font-size: 1.2em;
-}
+/* Body Styling */
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   margin: 0 auto;
   padding: 20px;
   max-width: 800px;
-  background-color: #f9f9f9;
-  color: #333;
+  background-color: #ffffff; /* White background */
+  color: #101820; /* Dark Blue text for readability */
 }
-h1, h2, h3 {
-  color: #00A6FB; /* Bright Electric Blue */
-  border-bottom: 2px solid #1C5D99; /* Subtle underline */
+
+/* Headers */
+h1, h2, h3, h4 {
+  color: #1C5D99; /* Dark Electric Blue for headers */
   padding-bottom: 5px;
 }
+
+h1 {
+  text-align: center;
+}
+
+h4 {
+  font-size: 1.0em;
+}
+h1, h2 {
+  border-bottom: .5px solid #00A6FB; /* Bright Blue underline for emphasis */
+}
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #ffffff; /* White background for consistency */
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #D4E4F7; /* Light Blue borders */
+  color: #101820; /* Dark text for table cells */
+}
+
+th {
+  background-color: #1C5D99; /* Dark Blue for headers */
+  color: #ffffff; /* White text for contrast */
+}
+
+/* Code Blocks */
+pre, code {
+  font-family: Consolas, Monaco, Courier, monospace;
+  font-size: 0.75em;
+  background-color: #F4F9FF; /* Light Blue-Gray background */
+  
+  border-radius: 5px;
+  padding: 3px;
+  overflow-x: auto;
+  color: #101820; /* Dark text */
+}
+
+pre {
+  white-space: pre-wrap; /* Wrap long lines */
+  margin-left: 30px;
+
+}
+
+code {
+  color: #1C5D99; /* Dark Electric Blue for inline code */
+}
+
+/* Pass/Fail Highlighting */
+.pass {
+  color: #4CB944; /* Green for Pass */
+  font-weight: bold;
+}
+
+.fail {
+  color: #FB3640; /* Bright Red for Fail */
+  font-weight: bold;
+}
+
+/* Bullets and Lists */
+ul {
+  padding-left: 20px;
+  color: #101820; /* Dark text for lists */
+}
+
+li {
+  margin-bottom: 2px;
+}
+
+li::marker {
+  color: #1C5D99; /* Dark Electric Blue for list markers */
+}
+
+/* Horizontal Rules */
+hr {
+  border: 0;
+  height: 2px;
+  background: #1C5D99; /* Dark Electric Blue for dividers */
+  margin: 20px 0;
+}
+
+/* Links */
+a {
+  color: #1C5D99; /* Dark Electric Blue for links */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #00A6FB; /* Bright Blue for hover */
+}
+
+
 </style>
 
 ```{r setup, include=FALSE}
@@ -147,7 +232,7 @@ Some of the tests check for only one particular aspect of what was requested in 
 ```{r code = readLines("test_text_shortener.R"), eval = FALSE}
 ```
 
-### Output:
+### Output of automated testing:
 
 We ran each of the tests outlined above. Here, we see `testthat` output only for the tests that were unsuccessful. For each, you can see:
 
@@ -166,10 +251,10 @@ for (result in results) {
   evaluation <- as.character((result$results)[[1]])
   if (grepl(pattern = "success", x = evaluation)) {
     # Add success message
-    output <- paste0(output, "\n\n### ✅ Test: ", result$test, " (Passed)\n\n")
+    output <- paste0(output, "\n\n#### ✅ Test: ", result$test, " (Passed)\n\n")
   } else {
     # Add the test name as a Markdown header
-    output <- paste0(output, "\n\n### ❌ Test: ", result$test, "\n\n")
+    output <- paste0(output, "\n\n#### ❌ Test: ", result$test, "\n\n")
     
     # Split the evaluation message into lines
     lines <- strsplit(evaluation, "\n")[[1]]
