@@ -151,6 +151,20 @@ for (result in results) {
     
     # Split the evaluation message into lines
     lines <- strsplit(evaluation, "\n")[[1]]
+
+    if (length(lines) != 4) {
+      # If not 4 lines, display raw evaluation
+      output <- paste0(output, "```\n", paste(lines, collapse = "\n"), "\n```\n")
+    } else {
+      # If exactly 4 lines, process the last two
+      your_output <- sub("x\\[1\\]:", "Your Output:", lines[3])
+      expected_output <- sub("y\\[1\\]:", "Expected Output:", lines[4])
+      
+      # Add formatted outputs directly
+      output <- paste0(
+        "```\n", your_output, "\n", expected_output, "\n```\n"
+      )
+    }
     
     # Format each line for indentation
     formatted_lines <- paste("    ", lines)
