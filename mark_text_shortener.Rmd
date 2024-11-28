@@ -1,5 +1,5 @@
 ---
-title: "Automarking"
+title: "Automarking for 25% of Bio773p Coursework"
 output: html_document
 author: Yannick Wurm
 ---
@@ -7,14 +7,31 @@ author: Yannick Wurm
 <style>
 pre, code {
   font-family: Consolas, Monaco, "Courier New", Courier, monospace;
-  font-size: 0.85em;
-  padding: 10px;
+  font-size: 0.75em;
+  padding: 3px;
   border-radius: 5px;
   overflow-x: auto;         /* Horizontal scrolling */
   white-space: pre-wrap;    /* Wrap long lines */
 }
+h2 {
+  font-size: 1.5em;
+}
 h3 {
-  font-size: 1.0em;
+  font-size: 1.2em;
+}
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 800px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+h1, h2, h3 {
+  color: #00A6FB; /* Bright Electric Blue */
+  border-bottom: 2px solid #1C5D99; /* Subtle underline */
+  padding-bottom: 5px;
 }
 </style>
 
@@ -29,9 +46,12 @@ student_id <- gsub(x = getwd(), pattern = ".*/", replacement = "")
 
 This is run for student `r student_id` on `r format(Sys.time(), "%A %B %d, %Y")` at `r format(Sys.time(), "%H:%M:%S")`.
 
-## Context: Text shortener function
 
-The goal of this assignment is to write a function that takes a text as input and returns a condensed version of that text. The following requirements were specified:
+## Introduction
+
+This document provides feedback on the function you submitted for automarking. Below, you'll find detailed results for the automated tests, as well as feedback on code style and formatting.
+
+**Context**: The goal of the assignment was to write a function that takes a text as input and returns a condensed version of that text. The following requirements were specified:
 
 ### Function Requirements:
 
@@ -106,9 +126,9 @@ if (file.exists("additional_notes.txt")) {
 
 
 
-## Autotesting
+## Automated testing of code functionality
 
-Using R's `testthat` package, I run automated tests for each of the features we request (see below).
+Using R's `testthat` package, we run automated tests for each of the requested features. We run these under diverse scenarios.
 
 ```{r tests, echo = FALSE, include = FALSE}
 test_results <- test_file(path     = "test_text_shortener.R")
@@ -132,8 +152,7 @@ Some of the tests check for only one particular aspect of what was requested in 
 We ran each of the tests outlined above. Here, we see `testthat` output only for the tests that were unsuccessful. For each, you can see:
 
   * the description of the test that was run (e.g., "Remove all of the following words: 'the', 'really', 'truly', 'very'.")
-  * the line of code that was run (e.g., `shorten_text(text)`), and a R's simplified explanation of the problem (e.g., `not equal to`).
-  * It then provides more details on the comparison it did. When comparing text, `x[1]` indicates what your code output, and `y[1]` indicates what would have been expected. If for many of the tests you see an output like "NULL" or "Lengths differ", then your function likely didn't return a single string. This could for example have happened if you are printing to the console, or if you are returning a vector of strings instead of a single string. Unfortunately, returning a string was one of the essential requirements for this exercise.
+  * It then provides more details on the comparison it did, what was expected, and what your code. If for many of the tests you see an output like "NULL" or "Lengths differ", then your function likely didn't return a single string. This could for example have happened if you are printing to the console, or if you are returning a vector of strings instead of a single string. Unfortunately, returning a string was one of the essential requirements for this exercise.
 
 ```{r rerunning_with_output, echo = FALSE, eval = TRUE}
 #a <- test_file(path     = "test_text_shortener.R")
@@ -145,7 +164,10 @@ results <- test_file(path = "test_text_shortener.R", reporter = "List")
 
 for (result in results) {
   evaluation <- as.character((result$results)[[1]])
-  if (!grepl(pattern = "success", x = evaluation)) {
+  if (grepl(pattern = "success", x = evaluation)) {
+    # Add success message
+    output <- paste0(output, "\n\n### ✅ Test: ", result$test, " (Passed)\n\n")
+  } else {
     # Add the test name as a Markdown header
     output <- paste0(output, "\n\n### ❌ Test: ", result$test, "\n\n")
     
@@ -154,23 +176,19 @@ for (result in results) {
 
     if (length(lines) != 4) {
       # If not 4 lines, display raw evaluation
-      output <- paste0(output, "```\n", paste(lines, collapse = "\n"), "\n```\n")
+      formatted_lines <- paste("    ", lines)
+      output <- paste0(output, "```\n", paste(formatted_lines, collapse = "\n"), "\n```\n")
     } else {
-      # If exactly 4 lines, process the last two
-      your_output <- sub("x\\[1\\]:", "Your Output:", lines[3])
-      expected_output <- sub("y\\[1\\]:", "Expected Output:", lines[4])
+     # If exactly 4 lines, process the last two
+      your_output <- sub("x\\[1\\]:",     "Your output :", lines[3])
+      expected_output <- sub("y\\[1\\]:", "Expected    :", lines[4])
       
       # Add formatted outputs directly
       output <- paste0(
+        output,
         "```\n", your_output, "\n", expected_output, "\n```\n"
       )
     }
-    
-    # Format each line for indentation
-    formatted_lines <- paste("    ", lines)
-    
-    # Append formatted lines as a Markdown code block
-    output <- paste0(output, "```\n", paste(formatted_lines, collapse = "\n"), "\n```\n")
   }
 }
 
@@ -178,9 +196,9 @@ for (result in results) {
 knitr::asis_output(output)
 ```
 
-### Lint syntax / style guide checking
+## Lint syntax / style guide checking
 
-As covered in class, we use `lintr` to ensure that formatting is inline with the style guide.
+As covered in class, we use the `lintr` library to check whether formatting is in line with the style guide.
 
 ```{r question1_lint, echo = FALSE}
 
@@ -195,18 +213,24 @@ lint_issues <- lint(filename = submitted_script,
 
 Overall, `lintr` found `r length(lint_issues)` issues with style of your code.
 
-#### Output:
-
 The identified issues are listed below:
 
 ```{r echo = FALSE}
+# Initialize output variable
+lint_output <- ""
 
-# pretty print each issue - this is a list
+# Pretty print each issue - assuming `lint_issues` is a list of issues
 for (issue in lint_issues) {
-  # add line number, column number, and message
-   print(paste("Line ", issue$line_number, ", column ", issue$column_number, ": ", issue$message, sep = ""))
-   print(paste("     Was: ", issue$line, sep = ""))
-   print("")
+  # Add line number, column number, and message
+  lint_output <- paste0(
+    lint_output,
+    "\n- **Line", issue$line_number, ", column ", issue$column_number, "**: ",
+    issue$message, "\n",
+    "  - **Line of code:** '`", issue$line, "`'\n"
+  )
 }
-```
+
+# Output the final Markdown content
+knitr::asis_output(paste0("\n### Identified Lint Issues\n\n", lint_output))
+
 
